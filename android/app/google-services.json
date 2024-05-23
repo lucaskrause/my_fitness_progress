@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "273588326791",
+    "project_id": "my-fitness-progress",
+    "storage_bucket": "my-fitness-progress.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273588326791:android:a7acf13e86c2b914bbc322",
+        "android_client_info": {
+          "package_name": "com.krause.myFitnessProgress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273588326791-p1efsicj0h73qdrsi0nfrecpnc80k21s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiRJP3VG0-XBDJVporwKCR3j4Wy_JStMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273588326791-p1efsicj0h73qdrsi0nfrecpnc80k21s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "273588326791-3ja1reuln3pksgtkg3i58h4r612f5d29.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.krause.dev.fitness.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
