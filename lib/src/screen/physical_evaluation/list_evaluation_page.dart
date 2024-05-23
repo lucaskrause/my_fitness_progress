@@ -13,13 +13,13 @@ class _ListEvaluationPageState extends State<ListEvaluationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.background,
+      //   backgroundColor: Theme.of(context).colorScheme.surface,
       //   elevation: 0,
       //   title: const Text('Avaliações Físicas', style: TextStyle(color: Colors.white),),
       //   centerTitle: true,
       //   iconTheme: const IconThemeData(color: Colors.white),
       // ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10),
         child: Column(

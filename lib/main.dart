@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           onSecondaryContainer: const Color.fromRGBO(11, 82, 38, 1),
           onTertiaryContainer: const Color.fromRGBO(255, 218, 10, 1),
           onErrorContainer: const Color.fromRGBO(91, 11, 13, 1),
-          background: const Color.fromRGBO(30, 30, 30, 1),
+          surface: const Color.fromRGBO(30, 30, 30, 1),
         ),
         useMaterial3: true,
       ),

@@ -1,14 +1,19 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_fitness_progress/src/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
   AuthController();
   
   User? user;
-  String? email;
-  String? password;
+  // String? email;
+  // String? password;
 
   Future saveUser() async {
-    await SharedPreferences.setString,
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('name', user!.name);
+    prefs.setInt('age', user!.age);
+    prefs.setInt('height', user!.height);
   }
 
   // Future<void> login() async {

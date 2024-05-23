@@ -94,7 +94,9 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                 },
                 touchTooltipData: BarTouchTooltipData(
                   maxContentWidth: 200,
-                  tooltipBgColor: Colors.blueGrey,
+                  getTooltipColor: (data) {
+                    return Colors.blueGrey;
+                  },
                   tooltipHorizontalAlignment: FLHorizontalAlignment.center,
                   tooltipMargin: -10,
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {

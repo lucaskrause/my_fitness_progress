@@ -15,7 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -129,6 +129,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ? () async {
                             FocusScope.of(context).unfocus();
                             await controller.saveData();
+
+                            if (!context.mounted) return;
+                            
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (_) => const HomePage()),
                             );

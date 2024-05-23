@@ -22,7 +22,7 @@ class _MyPersonPageState extends State<MyPersonPage> {
       //   centerTitle: true,
       //   iconTheme: const IconThemeData(color: Colors.white),
       // ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           var res = await Navigator.of(context).push(
