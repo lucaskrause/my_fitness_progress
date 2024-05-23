@@ -1,6 +1,6 @@
 # my_fitness_progress
 
-A new Flutter project.
+Projeto de avaliação física (Projeto de estudo).
 
 ## Getting Started
 
