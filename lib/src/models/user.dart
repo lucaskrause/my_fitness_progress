@@ -1,12 +1,14 @@
 class User {
-  final String name; 
-  final int age;
-  final int height;
+  String name; 
+  int age;
+  int height;
+  double weight;
 
   User({
     this.name = "",
     this.age = 0,
     this.height = 0,
+    this.weight = 0,
   });
 
   factory User.fromMap(Map<String, dynamic> json) {
@@ -14,6 +16,7 @@ class User {
       name: json['name'],
       age: json['age'],
       height: json['height'],
+      weight: json['weight'],
     );
   }
 
@@ -22,6 +25,7 @@ class User {
       'name': name,
       'age': age,
       'height': height,
+      'weight': weight,
     };
   }
 }

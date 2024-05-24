@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_fitness_progress/src/controller/auth/auth_controller.dart';
 import 'package:my_fitness_progress/src/screen/home/home_page.dart';
+import 'package:my_fitness_progress/src/screen/login/register_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -19,13 +20,23 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer(const Duration(seconds: 2), () { 
+    _timer = Timer(const Duration(seconds: 2), () {
       // Verifica dados existentes
-      // Se sim, vai para a HomePage
-      // Se não, registra as informações básicas
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      authController.checkRegister().then((value) {
+        if (value) {
+          // Se sim, vai para a HomePage
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const HomePage()),
+            (route) => false,
+          );
+        } else {
+          // Se não, registra as informações básicas
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const RegisterPage()),
+            (route) => false
+          );
+        }
+      });
     });
   }
 

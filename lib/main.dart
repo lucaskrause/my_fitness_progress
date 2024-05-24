@@ -33,6 +33,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Fitness Project',
       theme: ThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color.fromRGBO(255, 218, 10, 1),
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
         cardColor: const Color.fromRGBO(15, 15, 15, 1),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.black,

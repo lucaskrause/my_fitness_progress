@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_fitness_progress/src/controller/register/register_controller.dart';
+import 'package:flutter/services.dart';
+import 'package:my_fitness_progress/src/controller/auth/auth_controller.dart';
 import 'package:my_fitness_progress/src/screen/home/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -10,7 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  RegisterController controller = RegisterController();
+  AuthController controller = AuthController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,15 +61,39 @@ class _RegisterPageState extends State<RegisterPage> {
                     Container(
                       color: Theme.of(context).cardColor,
                       child: TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        ),
                         cursorColor: Colors.white,
                         style: const TextStyle(color: Colors.white),
                         onChanged: (String value) {
                           setState(() {
-                            controller.setNome(value);
+                            controller.setName(value);
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),const Text(
+                      'Idade',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      color: Theme.of(context).cardColor,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        cursorColor: Colors.white,
+                        style: const TextStyle(color: Colors.white),
+                        onChanged: (String value) {
+                          setState(() {
+                            controller.setAge(value);
                           });
                         },
                       ),
@@ -85,15 +110,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     Container(
                       color: Theme.of(context).cardColor,
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         cursorColor: Colors.white,
                         style: const TextStyle(color: Colors.white),
                         onChanged: (String value) {
                           setState(() {
-                            controller.setAltura(value);
+                            controller.setHeight(value);
                           });
                         },
                       ),
@@ -110,15 +139,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     Container(
                       color: Theme.of(context).cardColor,
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         cursorColor: Colors.white,
                         style: const TextStyle(color: Colors.white),
                         onChanged: (String value) {
                           setState(() {
-                            controller.setPeso(value);
+                            controller.setWeight(value);
                           });
                         },
                       ),
