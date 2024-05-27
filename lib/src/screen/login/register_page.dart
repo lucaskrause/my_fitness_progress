@@ -93,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: const TextStyle(color: Colors.white),
                         onChanged: (String value) {
                           setState(() {
-                            controller.setAge(value);
+                            controller.setAge(int.parse(value));
                           });
                         },
                       ),
@@ -122,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: const TextStyle(color: Colors.white),
                         onChanged: (String value) {
                           setState(() {
-                            controller.setHeight(value);
+                            controller.setHeight(int.parse(value));
                           });
                         },
                       ),
@@ -151,25 +151,23 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: const TextStyle(color: Colors.white),
                         onChanged: (String value) {
                           setState(() {
-                            controller.setWeight(value);
+                            controller.setWeight(double.parse(value));
                           });
                         },
                       ),
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(
-                      onPressed: controller.nome.isNotEmpty && controller.altura.isNotEmpty && controller.peso.isNotEmpty
-                        ? () async {
-                            FocusScope.of(context).unfocus();
-                            await controller.saveData();
+                      onPressed: () async {
+                        FocusScope.of(context).unfocus();
+                        await controller.saveUser();
 
-                            if (!context.mounted) return;
-                            
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const HomePage()),
-                            );
-                          }
-                        : null,
+                        if (!context.mounted) return;
+                        
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const HomePage()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size.fromHeight(50),
                         backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,

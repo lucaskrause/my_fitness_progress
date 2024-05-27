@@ -1,5 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:my_fitness_progress/src/controller/auth/auth_controller.dart';
+import 'package:my_fitness_progress/src/screen/login/register_page.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({super.key});
@@ -9,6 +12,8 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
+  AuthController authController = GetIt.I.get<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -22,7 +27,12 @@ class _DrawerPageState extends State<DrawerPage> {
             leading: Icon(Icons.power_settings_new, color: Colors.red[700], weight: 700),
             title: const Text('Sair', style: TextStyle(color: Colors.white)),
             onTap: () {
-              FirebaseAuth.instance.signOut();
+              authController.removeUser();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const RegisterPage()),
+                (route) => false
+              );
+              // FirebaseAuth.instance.signOut();
             },
           ),
         ],

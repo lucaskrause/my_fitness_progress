@@ -7,8 +7,6 @@ class AuthController {
   AuthController();
   
   User user = User();
-  // String? email;
-  // String? password;
 
   void setName(String value) {
     user.name = value;
@@ -38,7 +36,7 @@ class AuthController {
     }
   }
 
-  Future checkRegister() async {
+  Future<User?> checkRegister() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final name = prefs.getString('name');
@@ -48,15 +46,36 @@ class AuthController {
 
       if (name != null && age != null && height != null && weight != null) {
         user = User(name: name, age: age, height: height);
-        return true;
+        return user;
       }
 
-      return false;
+      return null;
     } catch (e) {
       debugPrint(e.toString());
-      return false;
+      return null;
     }
   }
+
+  Future removeUser() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove('name');
+      prefs.remove('age');
+      prefs.remove('height');
+      prefs.remove('weight');
+
+      //TODO: remover dados do banco local
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  //------------------------
+  //------- Firebase -------
+  //------------------------
+
+  // String? email;
+  // String? password;
 
   // Future<void> login() async {
   //   try {
