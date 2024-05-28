@@ -45,7 +45,7 @@ class AuthController {
       final weight = prefs.getDouble('weight');
 
       if (name != null && age != null && height != null && weight != null) {
-        user = User(name: name, age: age, height: height);
+        user = User(name: name, age: age, height: height, weight: weight);
         return user;
       }
 
@@ -64,7 +64,7 @@ class AuthController {
       prefs.remove('height');
       prefs.remove('weight');
 
-      //TODO: remover dados do banco local
+      //TODO: remover dados do banco
     } catch (e) {
       debugPrint(e.toString());
     }

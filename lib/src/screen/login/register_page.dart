@@ -144,9 +144,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
                         cursorColor: Colors.white,
                         style: const TextStyle(color: Colors.white),
                         onChanged: (String value) {
