@@ -11,12 +11,12 @@ class EvaluationController {
 
   Evaluation evaluation = Evaluation();
 
-  Future<void> getColletion(String collection) async {
-    var res = await service.getColletion(collection);
-    haveData = res.size > 0;
-  }
+  // Future<void> getColletion(String collection) async {
+  //   var res = await service.getColletion(collection);
+  //   haveData = res.size > 0;
+  // }
 
   Future<void> saveEvaluation() async {
-    // await service.saveEvaluation(evaluation.toJson());
+    await service.saveEvaluation(evaluation);
   }
 }
