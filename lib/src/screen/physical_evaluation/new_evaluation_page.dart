@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_fitness_progress/src/controller/evaluation/evaluation_controller.dart';
+import 'package:my_fitness_progress/src/models/evaluation.dart';
+import 'package:my_fitness_progress/src/utils/helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewEvaluationPage extends StatefulWidget {
-  const NewEvaluationPage({super.key});
+  final bool isFirst;
+
+  const NewEvaluationPage({this.isFirst = false, super.key});
 
   @override
   State<NewEvaluationPage> createState() => _NewEvaluationPageState();
@@ -12,15 +16,33 @@ class NewEvaluationPage extends StatefulWidget {
 class _NewEvaluationPageState extends State<NewEvaluationPage> {
   EvaluationController controller = EvaluationController();
   TextEditingController alturaController = TextEditingController();
+  TextEditingController pesoController = TextEditingController();
+  TextEditingController imcController = TextEditingController();
+  TextEditingController classImcController = TextEditingController();
+  TextEditingController classFatController = TextEditingController();
 
   Future<void> init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? altura = prefs.getInt("height");
+    controller.evaluation!.altura = altura.toString();
     alturaController.text = altura!.toString();
+
+    if (widget.isFirst) {
+      double? peso = prefs.getDouble("weight");
+      controller.evaluation!.pesoAtual = peso.toString();
+      pesoController.text = peso!.toString();
+
+      Map imc = Helper.calculaIMC(altura, peso);
+      controller.evaluation!.imc = double.parse(imc["imc"]);
+      imcController.text = imc["imc"];
+      controller.evaluation!.classImc = imc["classification"];
+      classImcController.text = imc["classification"];
+    }
   }
 
   @override
   void initState() {
+    controller.evaluation = Evaluation();
     init();
     super.initState();
   }
@@ -31,7 +53,10 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
-        title: const Text('Nova Avaliação', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Nova Avaliação',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -64,18 +89,19 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 ),
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
-                onChanged: (value) {
-                  controller.evaluation!.altura = value;
-                },
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Peso atual (kg)', style: TextStyle(color: Colors.white)),
+            const Text('Peso atual (kg)',
+                style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                controller: pesoController,
+                readOnly: widget.isFirst,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -84,6 +110,13 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
                   controller.evaluation!.pesoAtual = value;
+
+                  int alt = int.parse(controller.evaluation!.altura!);
+                  Map imc = Helper.calculaIMC(alt, double.parse(value));
+                  controller.evaluation!.imc = imc["imc"];
+                  imcController.text = imc["imc"];
+                  controller.evaluation!.classImc = imc["classification"];
+                  classImcController.text = imc["classification"];
                 },
               ),
             ),
@@ -92,41 +125,47 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
-              child: const TextField(
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                ),
-                cursorColor: Colors.white,
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text('Classif. do IMC', style: TextStyle(color: Colors.white)),
-            const SizedBox(height: 5),
-            Container(
-              color: Theme.of(context).cardColor,
               child: TextField(
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                controller: imcController,
+                readOnly: true,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                 ),
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
-                onChanged: (value) {
-                  controller.evaluation!.classImc = value;
-                },
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Percentual de Gordura (%)', style: TextStyle(color: Colors.white)),
+            const Text('Classif. do IMC',
+                style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                controller: classImcController,
+                readOnly: true,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                ),
+                cursorColor: Colors.white,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text('Percentual de Gordura (%)',
+                style: TextStyle(color: Colors.white)),
+            const SizedBox(height: 5),
+            Container(
+              color: Theme.of(context).cardColor,
+              child: TextField(
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -135,34 +174,40 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
                   controller.evaluation!.percentFat = value;
+
+                  classFatController.text =
+                      Helper.classificacaoGordura(double.parse(value));
                 },
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Classif. % de Gordura', style: TextStyle(color: Colors.white)),
+            const Text('Classif. % de Gordura',
+                style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                controller: classFatController,
+                readOnly: true,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                 ),
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
-                onChanged: (value) {
-                  controller.evaluation!.classFat = value;
-                },
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Massa de Gordura (Kg)', style: TextStyle(color: Colors.white)),
+            const Text('Massa de Gordura (Kg)',
+                style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -186,21 +231,19 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
             const Divider(),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                await controller.saveEvaluation();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                minimumSize: const Size.fromHeight(50),
-              ),
-              child: const Text(
-                'Salvar objetivo',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
+                onPressed: () async {
+                  await controller.saveEvaluation();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Theme.of(context).colorScheme.onSecondaryContainer,
+                  minimumSize: const Size.fromHeight(50),
                 ),
-              )
-            ),
+                child: const Text(
+                  'Salvar avaliação',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                )),
             const SizedBox(height: 20),
           ],
         ),
