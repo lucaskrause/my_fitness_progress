@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:my_fitness_progress/src/models/evaluation.dart';
+import 'package:my_fitness_progress/src/screen/physical_evaluation/new_evaluation_page.dart';
 
 class ResumeFitness extends StatefulWidget {
   const ResumeFitness({super.key});
@@ -10,13 +14,8 @@ class ResumeFitness extends StatefulWidget {
 
 class _ResumeFitnessState extends State<ResumeFitness> {
   int touchedIndex = -1;
-  Map<int, List<double>> mainItems = <int, List<double>>{
-    0: [16, 57.5],
-    1: [11.2, 63.3],
-    2: [9.6, 70.4],
-  };
-
   bool isShadowBar(int rodIndex) => rodIndex == 1;
+  Map<int, List<double>> mainItems = <int, List<double>>{};
 
   BarChartGroupData generateGroup(int x, double v1, double v2) {
     final sum = v1 + v2;
@@ -57,6 +56,53 @@ class _ResumeFitnessState extends State<ResumeFitness> {
         ),
       ],
     );
+  }
+
+  Future<Evaluation?> showAskEvaluation() async {
+    Evaluation? evaluation;
+
+    await showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text("Deseja cadastrar uma avaliação?"),
+          content: const Text("Você ainda não tem avaliações cadastras, faça sua primeira avaliação para futuras comparações durante sua evolução"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Não cadastrar"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const NewEvaluationPage()),
+                );
+              },
+              child: const Text("Cadastrar"),
+            ),
+          ],
+        );
+      }
+    );
+
+    return evaluation;
+  }
+
+  @override
+  void initState() {
+    Timer(const Duration(seconds: 5), () {
+      // TODO: Puxar avaliações do banco
+      List<Evaluation> evaluations = []; 
+      
+      if (evaluations.isEmpty) {
+        showAskEvaluation();
+      }
+    });
+
+    super.initState();
   }
 
   @override

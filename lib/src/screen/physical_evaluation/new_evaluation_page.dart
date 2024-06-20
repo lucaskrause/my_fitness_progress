@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_fitness_progress/src/controller/evaluation/evaluation_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewEvaluationPage extends StatefulWidget {
   const NewEvaluationPage({super.key});
@@ -10,6 +11,19 @@ class NewEvaluationPage extends StatefulWidget {
 
 class _NewEvaluationPageState extends State<NewEvaluationPage> {
   EvaluationController controller = EvaluationController();
+  TextEditingController alturaController = TextEditingController();
+
+  Future<void> init() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? altura = prefs.getInt("height");
+    alturaController.text = altura!.toString();
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +56,8 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                controller: alturaController,
+                readOnly: true,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -50,7 +65,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
-                  controller.evaluation.altura = value;
+                  controller.evaluation!.altura = value;
                 },
               ),
             ),
@@ -68,7 +83,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
-                  controller.evaluation.pesoAtual = value;
+                  controller.evaluation!.pesoAtual = value;
                 },
               ),
             ),
@@ -101,7 +116,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
-                  controller.evaluation.classImc = value;
+                  controller.evaluation!.classImc = value;
                 },
               ),
             ),
@@ -119,7 +134,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
-                  controller.evaluation.percentFat = value;
+                  controller.evaluation!.percentFat = value;
                 },
               ),
             ),
@@ -137,7 +152,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
-                  controller.evaluation.classFat = value;
+                  controller.evaluation!.classFat = value;
                 },
               ),
             ),
@@ -155,7 +170,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
-                  controller.evaluation.fatKg = value;
+                  controller.evaluation!.fatKg = value;
                 },
               ),
             ),

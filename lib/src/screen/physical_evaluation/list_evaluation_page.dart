@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_fitness_progress/src/components/default_bottom_navigation_bar.dart';
+import 'package:my_fitness_progress/src/controller/evaluation/evaluation_controller.dart';
 
 class ListEvaluationPage extends StatefulWidget {
   const ListEvaluationPage({super.key});
@@ -9,6 +10,14 @@ class ListEvaluationPage extends StatefulWidget {
 }
 
 class _ListEvaluationPageState extends State<ListEvaluationPage> {
+  EvaluationController controller = EvaluationController();
+
+  @override
+  void initState() {
+    // TODO: Recuperar lista de avaliações do banco
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
