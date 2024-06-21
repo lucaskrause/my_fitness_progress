@@ -175,8 +175,10 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 onChanged: (value) {
                   controller.evaluation!.percentFat = value;
 
-                  classFatController.text =
+                  String classFat =
                       Helper.classificacaoGordura(double.parse(value));
+                  controller.evaluation!.classFat = classFat;
+                  classFatController.text = classFat;
                 },
               ),
             ),
@@ -231,8 +233,9 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
             const Divider(),
             const SizedBox(height: 20),
             ElevatedButton(
-                onPressed: () async {
-                  await controller.saveEvaluation();
+                onPressed: () {
+                  controller.saveEvaluation();
+                  Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:

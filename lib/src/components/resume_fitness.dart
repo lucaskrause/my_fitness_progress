@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:my_fitness_progress/src/models/evaluation.dart';
+import 'package:my_fitness_progress/src/controller/evaluation/evaluation_controller.dart';
 import 'package:my_fitness_progress/src/screen/physical_evaluation/new_evaluation_page.dart';
 
 class ResumeFitness extends StatefulWidget {
-  const ResumeFitness({super.key});
+  final EvaluationController controller;
+  const ResumeFitness(this.controller, {super.key});
 
   @override
   State<ResumeFitness> createState() => _ResumeFitnessState();
@@ -58,47 +59,41 @@ class _ResumeFitnessState extends State<ResumeFitness> {
     );
   }
 
-  Future<Evaluation?> showAskEvaluation() async {
-    Evaluation? evaluation;
-
+  Future<void> showAskEvaluation() async {
     await showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: const Text("Deseja cadastrar uma avaliação?"),
-            content: const Text(
-                "Você ainda não tem avaliações cadastras, faça sua primeira avaliação para futuras comparações durante sua evolução"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Não cadastrar"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (_) => const NewEvaluationPage(isFirst: true)),
-                  );
-                },
-                child: const Text("Cadastrar"),
-              ),
-            ],
-          );
-        });
-
-    return evaluation;
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text("Deseja cadastrar uma avaliação?"),
+          content: const Text(
+              "Você ainda não tem avaliações cadastras, faça sua primeira avaliação para futuras comparações durante sua evolução"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Não cadastrar"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (_) => const NewEvaluationPage(isFirst: true)),
+                );
+              },
+              child: const Text("Cadastrar"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 5), () {
-      // TODO: Puxar avaliações do banco
-      List<Evaluation> evaluations = [];
-
-      if (evaluations.isEmpty) {
+    Timer(const Duration(seconds: 2), () {
+      if (widget.controller.evaluationList.isEmpty) {
         showAskEvaluation();
       }
     });

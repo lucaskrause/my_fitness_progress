@@ -5,20 +5,24 @@ class DatabaseHelper {
 
   static const String _dbName = "fitness.db";
   static const int _dbVersion = 1;
-  static const String _evaluations = "CREATE TABLE IF NOT EXISTS evaluations (id INTEGER PRIMARY KEY AUTOINCREMENT, shoulder TEXT, chest TEXT, right_arm TEXT, left_arm TEXT, forearm_right TEXT, forearm_left TEXT, waist TEXT, stomach TEXT, hip TEXT, right_thigh TEXT, left_thigh TEXT, calf_right TEXT, calf_left TEXT);";
+  static const String _evaluations =
+      "CREATE TABLE IF NOT EXISTS evaluations (id INTEGER PRIMARY KEY AUTOINCREMENT, evaluation TEXT);";
 
   static const List<Map<String, String>> tableData = [
     {"name": "evaluations", "sql": _evaluations},
   ];
 
-  static initDatabase() async {
+  static Future<Database> initDatabase() async {
     String databasePath = await getDatabasesPath();
-    
-    return await openDatabase("$databasePath/$_dbName", version: _dbVersion, onCreate: onCreate);
+
+    _instance = await openDatabase("$databasePath/$_dbName",
+        version: _dbVersion, onCreate: onCreate);
+
+    return _instance!;
   }
 
-  Future<Database> get instance async {
-    _instance ??= initDatabase();
+  static Future<Database> get instance async {
+    _instance ??= await initDatabase();
     return _instance!;
   }
 

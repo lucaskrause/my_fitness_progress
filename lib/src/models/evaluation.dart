@@ -1,6 +1,7 @@
 import 'package:my_fitness_progress/src/models/anthropometrics.dart';
 
 class Evaluation {
+  int id = 0;
   String? altura;
   String? pesoAtual;
   double imc = 0;
@@ -11,6 +12,7 @@ class Evaluation {
   Anthropometrics? medidas;
 
   Evaluation({
+    this.id = 0,
     this.altura,
     this.pesoAtual,
     this.percentFat,
@@ -19,13 +21,27 @@ class Evaluation {
   });
 
   Evaluation.fromJson(Map<String, dynamic> json) {
-    altura = json['altura_cm'];
-    pesoAtual = json['peso_kg'];
+    id = json['id'] ?? 0;
+    altura = json['altura'];
+    pesoAtual = json['peso'];
     imc = json['imc'];
     classImc = json['class_imc'];
     percentFat = json['percent_fat'];
     classFat = json['class_fat'];
     fatKg = json['fat_kg'];
     medidas = Anthropometrics.fromJson(json['medidas']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'altura': altura,
+      'peso': pesoAtual,
+      'imc': imc = 0,
+      'class_imc': classImc,
+      'fat_kg': fatKg,
+      'percent_fat': percentFat,
+      'class_fat': classFat,
+      'medidas': medidas?.toJson(),
+    };
   }
 }

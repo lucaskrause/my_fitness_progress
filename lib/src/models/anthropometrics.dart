@@ -44,4 +44,22 @@ class Anthropometrics {
     panturrilhaDireita = json['panturrilha_direita'];
     panturrilhaEsquerda = json['panturrilha_esquerda'];
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'ombro': ombro,
+      'torax': torax,
+      'braco_direito': bracoDireito,
+      'braco_esquerdo': bracoEsquerdo,
+      'antebraco_direito': antebracoDireito,
+      'antebraco_esquerdo': antebracoEsquerdo,
+      'cintura': cintura,
+      'barriga': barriga,
+      'quadril': quadril,
+      'coxa_direita': coxaDireita,
+      'coxa_esquerda': coxaEsquerda,
+      'panturrilha_direita': panturrilhaDireita,
+      'panturrilha_esquerda': panturrilhaEsquerda,
+    };
+  }
 }
