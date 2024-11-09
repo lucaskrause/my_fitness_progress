@@ -24,6 +24,6 @@ class Service {
   }
 
   Future<void> deleteEvaluation() async {
-    await dao.delete(1);
+    // await dao.delete(1);
   }
 }

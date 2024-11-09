@@ -25,13 +25,13 @@ class Helper {
 
     if (porcentagem < 7) {
       classification = "Muito baixo";
-    } else if (porcentagem > 7 && porcentagem < 13) {
+    } else if (porcentagem >= 7 && porcentagem < 13) {
       classification = "Baixo";
-    } else if (porcentagem > 13 && porcentagem < 19) {
+    } else if (porcentagem >= 13 && porcentagem < 19) {
       classification = "Normal";
-    } else if (porcentagem > 19 && porcentagem < 26) {
+    } else if (porcentagem >= 19 && porcentagem < 26) {
       classification = "Moderadamente alto";
-    } else if (porcentagem > 26 && porcentagem < 33) {
+    } else if (porcentagem >= 26 && porcentagem < 33) {
       classification = "Alto";
     } else {
       classification = "Muito alto";

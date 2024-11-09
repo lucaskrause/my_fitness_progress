@@ -22,7 +22,10 @@ class DatabaseHelper {
   }
 
   static Future<Database> get instance async {
-    _instance ??= await initDatabase();
+    if (_instance == null || !_instance!.isOpen) {
+      _instance = await initDatabase();
+    }
+
     return _instance!;
   }
 

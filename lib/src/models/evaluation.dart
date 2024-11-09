@@ -29,7 +29,9 @@ class Evaluation {
     percentFat = json['percent_fat'];
     classFat = json['class_fat'];
     fatKg = json['fat_kg'];
-    medidas = Anthropometrics.fromJson(json['medidas']);
+    medidas = json['medidas'] == null
+        ? null
+        : Anthropometrics.fromJson(json['medidas']);
   }
 
   Map<String, dynamic> toJson() {

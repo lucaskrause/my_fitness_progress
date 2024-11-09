@@ -4,7 +4,7 @@ class GenericDao {
   Future<bool> save(String avaliacao) async {
     var dbClient = await DatabaseHelper.instance;
     int id = await dbClient
-        .rawInsert('INSERT INTO evaluations(evaluation) VALUES("$avaliacao")');
+        .rawInsert("INSERT INTO evaluations(evaluation) VALUES('$avaliacao')");
     dbClient.close();
 
     return id != 0;
