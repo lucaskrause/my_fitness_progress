@@ -5,13 +5,11 @@ import 'package:my_fitness_progress/firebase_options.dart';
 import 'package:my_fitness_progress/src/controller/auth/auth_controller.dart';
 import 'package:my_fitness_progress/src/screen/home/splash_page.dart';
 
-// Amarelo - 255, 218, 10
-// Verde - 11, 82, 38
-// Vermelho - 91, 11, 13
-// Roxo - 86, 82, 163
+// Amarelo     - Color.fromRGBO(255, 218, 10, 1)
+// Verde       - Color.fromRGBO(11, 82, 38, 1)
+// Vermelho    - Color.fromRGBO(91, 11, 13, 1)
+// Roxo        - Color.fromRGBO(86, 82, 163, 1)
 // Roxo Escuro - 47, 45, 88
-// Cinza - 100, 100, 100
-// Preto - 0, 0, 0
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,30 +25,52 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My Fitness Project',
       theme: ThemeData(
+        brightness: Brightness.dark,
+        cardColor: Colors.black,
         inputDecorationTheme: InputDecorationTheme(
           contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Color.fromRGBO(255, 218, 10, 1),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white
             ),
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color.fromRGBO(11, 82, 38, 1),
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Color.fromRGBO(91, 11, 13, 1),
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Color.fromRGBO(91, 11, 13, 1),
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          errorStyle: const TextStyle(fontSize: 16, color: Color.fromRGBO(91, 11, 13, 1))
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromRGBO(11, 82, 38, 1),
+            minimumSize: const Size.fromHeight(50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         ),
-        cardColor: const Color.fromRGBO(15, 15, 15, 1),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.black,
-          primary: const Color.fromRGBO(15, 15, 15, 1),
-          onPrimaryContainer: const Color.fromRGBO(86, 82, 163, 1),
-          onSecondaryContainer: const Color.fromRGBO(11, 82, 38, 1),
-          onTertiaryContainer: const Color.fromRGBO(255, 218, 10, 1),
-          onErrorContainer: const Color.fromRGBO(91, 11, 13, 1),
-          surface: const Color.fromRGBO(30, 30, 30, 1),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color.fromRGBO(11, 82, 38, 1),
         ),
         useMaterial3: true,
       ),
