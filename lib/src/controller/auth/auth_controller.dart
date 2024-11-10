@@ -1,4 +1,6 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:my_fitness_progress/src/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +26,10 @@ class AuthController {
     user.weight = value;
   }
 
+  void setObjective(Map<String, double> value) {
+    user.objective = value;
+  }
+
   Future saveUser() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -31,6 +37,7 @@ class AuthController {
       prefs.setInt('age', user.age);
       prefs.setInt('height', user.height);
       prefs.setDouble('weight', user.weight);
+      prefs.setString('objective', jsonEncode(user.objective));
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -43,9 +50,10 @@ class AuthController {
       final age = prefs.getInt('age');
       final height = prefs.getInt('height');
       final weight = prefs.getDouble('weight');
+      final objective = prefs.getString('objective') != null ? Map<String, double>.from(jsonDecode(prefs.getString('objective')!)) : null;
 
       if (name != null && age != null && height != null && weight != null) {
-        user = User(name: name, age: age, height: height, weight: weight);
+        user = User(name: name, age: age, height: height, weight: weight, objective: objective);
         return user;
       }
 
@@ -63,39 +71,11 @@ class AuthController {
       prefs.remove('age');
       prefs.remove('height');
       prefs.remove('weight');
+      prefs.remove('objective');
 
       //TODO: remover dados do banco
     } catch (e) {
       debugPrint(e.toString());
     }
   }
-
-  //------------------------
-  //------- Firebase -------
-  //------------------------
-
-  // String? email;
-  // String? password;
-
-  // Future<void> login() async {
-  //   try {
-  //     var res = await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //       email: email!,
-  //       password: password!
-  //     );
-
-  //     auth = res.user;
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-
-  // Future<void> logout() async {
-  //   try {
-  //     await FirebaseAuth.instance.signOut();
-  //     auth = null;
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
 }

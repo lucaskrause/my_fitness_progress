@@ -85,10 +85,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theme.of(context).cardColor,
                         child: TextField(
                           keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          ),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
@@ -114,10 +110,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theme.of(context).cardColor,
                         child: TextField(
                           keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          ),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
@@ -143,10 +135,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theme.of(context).cardColor,
                         child: TextField(
                           keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          ),
                           cursorColor: Colors.white,
                           style: const TextStyle(color: Colors.white),
                           onChanged: (String value) {
@@ -168,13 +156,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             MaterialPageRoute(builder: (_) => const HomePage()),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(50),
-                          backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          )
-                        ),
                         child: const Text(
                           "Acessar APP",
                           style: TextStyle(

@@ -23,12 +23,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        title: const Text('Início',
-            style: TextStyle(color: Colors.white, fontSize: 24)),
+        title: const Text(
+          'Início',
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
       drawer: const DrawerPage(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10),

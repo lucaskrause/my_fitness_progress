@@ -8,7 +8,7 @@ class ObjectivePage extends StatefulWidget {
 }
 
 class _ObjectivePageState extends State<ObjectivePage> {
-  int weight = 0;
+  double weight = 0;
   double percentFat = 0;
 
   @override
@@ -36,15 +36,11 @@ class _ObjectivePageState extends State<ObjectivePage> {
                     color: Theme.of(context).cardColor,
                     child: TextField(
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                      ),
                       cursorColor: Colors.white,
                       style: const TextStyle(color: Colors.white),
                       onChanged: (value) {
                         setState(() {
-                          weight = int.parse(value);
+                          weight = double.parse(value);
                         });
                       },
                     ),
@@ -56,10 +52,6 @@ class _ObjectivePageState extends State<ObjectivePage> {
                     color: Theme.of(context).cardColor,
                     child: TextField(
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                      ),
                       cursorColor: Colors.white,
                       style: const TextStyle(color: Colors.white),
                       onChanged: (value) {
@@ -76,10 +68,6 @@ class _ObjectivePageState extends State<ObjectivePage> {
               onPressed: () {
                 Navigator.of(context).pop({'weight': weight, 'percentFat': percentFat});
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                minimumSize: const Size.fromHeight(50),
-              ),
               child: const Text(
                 'Salvar objetivo',
                 style: TextStyle(

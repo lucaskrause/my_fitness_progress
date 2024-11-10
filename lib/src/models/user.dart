@@ -3,12 +3,14 @@ class User {
   int age;
   int height;
   double weight;
+  Map<String, double>? objective;
 
   User({
     this.name = "",
     this.age = 0,
     this.height = 0,
     this.weight = 0,
+    this.objective,
   });
 
   factory User.fromMap(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class User {
       age: json['age'],
       height: json['height'],
       weight: json['weight'],
+      objective: json['objective'],
     );
   }
 
@@ -26,6 +29,7 @@ class User {
       'age': age,
       'height': height,
       'weight': weight,
+      'objective': objective,
     };
   }
 }

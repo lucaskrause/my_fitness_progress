@@ -20,6 +20,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
   TextEditingController imcController = TextEditingController();
   TextEditingController classImcController = TextEditingController();
   TextEditingController classFatController = TextEditingController();
+  TextEditingController fatMassController = TextEditingController();
 
   Future<void> init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -128,27 +129,18 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
               child: TextField(
                 controller: imcController,
                 readOnly: true,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                ),
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Classif. do IMC',
-                style: TextStyle(color: Colors.white)),
+            const Text('Classif. do IMC', style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
                 controller: classImcController,
                 readOnly: true,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -158,8 +150,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Percentual de Gordura (%)',
-                style: TextStyle(color: Colors.white)),
+            const Text('Percentual de Gordura (%)', style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
@@ -175,24 +166,24 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
                 onChanged: (value) {
                   controller.evaluation!.percentFat = value;
 
-                  String classFat =
-                      Helper.classificacaoGordura(double.parse(value));
+                  String classFat = Helper.classificacaoGordura(double.parse(value));
                   controller.evaluation!.classFat = classFat;
                   classFatController.text = classFat;
+                  
+                  double fatMass = double.parse(value) * double.parse(pesoController.text) / 100;
+                  controller.evaluation!.fatKg = fatMass.toStringAsFixed(2).toString();
+                  fatMassController.text = fatMass.toStringAsFixed(2).toString();
                 },
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Classif. % de Gordura',
-                style: TextStyle(color: Colors.white)),
+            const Text('Classif. % de Gordura', style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
                 controller: classFatController,
                 readOnly: true,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -202,14 +193,13 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Massa de Gordura (Kg)',
-                style: TextStyle(color: Colors.white)),
+            const Text('Massa de Gordura (Kg)', style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                controller: fatMassController,
+                readOnly: true,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -233,20 +223,18 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
             const Divider(),
             const SizedBox(height: 20),
             ElevatedButton(
-                onPressed: () {
-                  controller.saveEvaluation();
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Theme.of(context).colorScheme.onSecondaryContainer,
-                  minimumSize: const Size.fromHeight(50),
+              onPressed: () {
+                controller.saveEvaluation();
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Salvar avaliação',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
-                child: const Text(
-                  'Salvar avaliação',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                )),
+              ),
+            ),
             const SizedBox(height: 20),
           ],
         ),

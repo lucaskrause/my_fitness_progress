@@ -25,13 +25,13 @@ class _SplashPageState extends State<SplashPage> {
       // Verifica dados existentes
       authController.checkRegister().then((User? user) {
         if (user == null) {
-          // Se nulo, registra as informações básicas
+          if (!mounted) return;
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const RegisterPage()),
             (route) => false
           );
         } else {
-          // Se tiver user, vai para a HomePage
+          if (!mounted) return;
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const HomePage()),
             (route) => false,
@@ -65,7 +65,6 @@ class _SplashPageState extends State<SplashPage> {
           const SizedBox(height: 20),
           const CircularProgressIndicator(
             color: Colors.white,
-            
           )
         ],
       ),

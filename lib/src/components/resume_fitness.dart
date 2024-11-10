@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:my_fitness_progress/src/controller/auth/auth_controller.dart';
 import 'package:my_fitness_progress/src/controller/evaluation/evaluation_controller.dart';
+import 'package:my_fitness_progress/src/models/evaluation.dart';
 import 'package:my_fitness_progress/src/screen/physical_evaluation/new_evaluation_page.dart';
 
 class ResumeFitness extends StatefulWidget {
@@ -14,6 +17,10 @@ class ResumeFitness extends StatefulWidget {
 }
 
 class _ResumeFitnessState extends State<ResumeFitness> {
+  AuthController authController = GetIt.I.get<AuthController>();
+  double currentWeight = 0;
+  double currentPercentFat = 0;
+
   int touchedIndex = -1;
   bool isShadowBar(int rodIndex) => rodIndex == 1;
   Map<int, List<double>> mainItems = <int, List<double>>{};
@@ -38,7 +45,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
             BarChartRodStackItem(
               0,
               v1,
-              Theme.of(context).colorScheme.onTertiaryContainer,
+              const Color.fromRGBO(255, 218, 10, 1),
               BorderSide(
                 color: Colors.white,
                 width: isTouched ? 2 : 0,
@@ -47,7 +54,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
             BarChartRodStackItem(
               v1,
               v1 + v2,
-              Theme.of(context).colorScheme.onSecondaryContainer,
+              const Color.fromRGBO(11, 82, 38, 1),
               BorderSide(
                 color: Colors.white,
                 width: isTouched ? 2 : 0,
@@ -65,8 +72,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
       builder: (_) {
         return AlertDialog(
           title: const Text("Deseja cadastrar uma avaliação?"),
-          content: const Text(
-              "Você ainda não tem avaliações cadastras, faça sua primeira avaliação para futuras comparações durante sua evolução"),
+          content: const Text("Você ainda não tem avaliações cadastras, faça sua primeira avaliação para futuras comparações durante sua evolução"),
           actions: [
             TextButton(
               onPressed: () {
@@ -78,8 +84,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (_) => const NewEvaluationPage(isFirst: true)),
+                  MaterialPageRoute(builder: (_) => const NewEvaluationPage(isFirst: true)),
                 );
               },
               child: const Text("Cadastrar"),
@@ -90,11 +95,44 @@ class _ResumeFitnessState extends State<ResumeFitness> {
     );
   }
 
+  List<double> getPesos(Evaluation eva) {
+    double pesoTotal = double.parse(eva.pesoAtual!);
+    double pesoFat = double.parse(eva.fatKg!);
+    double pesoFit = pesoTotal - pesoFat;
+    
+    return [pesoFat, pesoFit];
+  }
+
   @override
   void initState() {
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 1), () {
       if (widget.controller.evaluationList.isEmpty) {
         showAskEvaluation();
+      } else {
+        Map<int, List<double>> itens = {};
+        var eva = widget.controller.evaluationList;
+
+        List<double> firstEvaluation = getPesos(eva.first);
+        itens[0] = firstEvaluation;
+
+        if (eva.length > 1) {
+          List<double> lastEvaluation = getPesos(eva.last);
+          itens[1] = lastEvaluation;
+        }
+
+        if (authController.user.objective != null) {
+          Map<String, double> objective = authController.user.objective!;
+          double weight = objective['weight']!;
+          double fatWeight = (objective['weight']! * objective['percentFat']!) / 100;
+          double cleanWeight = weight - fatWeight;
+          itens[2] = [fatWeight, cleanWeight];
+        }
+          
+        setState(() {
+          mainItems.addAll(itens);
+          currentWeight = double.parse(eva.last.pesoAtual!);
+          currentPercentFat = double.parse(eva.last.percentFat!);
+        });
       }
     });
 
@@ -117,14 +155,13 @@ class _ResumeFitnessState extends State<ResumeFitness> {
               barTouchData: BarTouchData(
                 handleBuiltInTouches: false,
                 touchCallback: (FlTouchEvent event, barTouchResponse) {
-                  if (!event.isInterestedForInteractions ||
-                      barTouchResponse == null ||
-                      barTouchResponse.spot == null) {
+                  if (!event.isInterestedForInteractions || barTouchResponse == null || barTouchResponse.spot == null) {
                     setState(() {
                       touchedIndex = -1;
                     });
                     return;
                   }
+
                   final rodIndex = barTouchResponse.spot!.touchedRodDataIndex;
                   if (isShadowBar(rodIndex)) {
                     setState(() {
@@ -132,6 +169,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                     });
                     return;
                   }
+
                   setState(() {
                     touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
                   });
@@ -156,7 +194,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: '\nMassa magra: ${muscle}Kg',
+                          text: '\nMassa magra: $muscle Kg',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -164,7 +202,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nMassa gorda: ${fat}Kg',
+                          text: '\nMassa gorda: $fat Kg',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -172,7 +210,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nPeso total: ${total}Kg',
+                          text: '\nPeso total: $total Kg',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -189,37 +227,37 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                 rightTitles: const AxisTitles(),
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        const style =
-                            TextStyle(color: Colors.white, fontSize: 10);
-                        String text;
-                        if (value == 0) {
-                          text = '0';
-                        } else {
-                          text = '${value.toInt()}';
-                        }
-                        return SideTitleWidget(
-                          axisSide: meta.axisSide,
-                          space: 4,
-                          child: Text(
-                            text,
-                            style: style,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                      interval: 10,
-                      reservedSize: 25),
+                    showTitles: true,
+                    getTitlesWidget: (double value, TitleMeta meta) {
+                      const style = TextStyle(color: Colors.white, fontSize: 10);
+                      String text;
+                      if (value == 0) {
+                        text = '0';
+                      } else {
+                        text = '${value.toInt()}';
+                      }
+                      return SideTitleWidget(
+                        axisSide: meta.axisSide,
+                        space: 4,
+                        child: Text(
+                          text,
+                          style: style,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                    interval: 10,
+                    reservedSize: 25,
+                  ),
                 ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
                     getTitlesWidget: (value, meta) {
                       const style = TextStyle(
-                          color: Colors.white,
-                          fontSize:
-                              10); //TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+                        color: Colors.white,
+                        fontSize: 10,
+                      );
                       String text;
                       switch (value.toInt()) {
                         case 0:
@@ -229,12 +267,13 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                         case 2:
                           text = 'Objetivo';
                         default:
-                          text = 'Sem dado';
+                          text = '';
                       }
 
                       return SideTitleWidget(
-                          axisSide: meta.axisSide,
-                          child: Text(text, style: style));
+                        axisSide: meta.axisSide,
+                        child: Text(text, style: style),
+                      );
                     },
                   ),
                 ),
@@ -245,47 +284,50 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                 getDrawingHorizontalLine: (double value) {
                   if (value == 0) {
                     return FlLine(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        strokeWidth: 3);
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      strokeWidth: 3,
+                    );
                   }
                   return FlLine(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onPrimaryContainer
-                        .withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.2),
                     strokeWidth: 1,
                   );
                 },
               ),
-              barGroups: mainItems.entries
-                  .map((e) => generateGroup(
-                        e.key,
-                        e.value[0],
-                        e.value[1],
-                      ))
-                  .toList(),
+              barGroups: mainItems.entries.map((e) => generateGroup(
+                e.key,
+                e.value[0],
+                e.value[1],
+              )).toList(),
               borderData: FlBorderData(show: false),
             ),
           ),
         ),
-        subtitle: const Column(
+        subtitle: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: [
-                Text('Peso atual: ',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-                Text('80', style: TextStyle(color: Colors.white)),
+                const Text(
+                  'Peso atual: ',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(currentWeight > 0 ? '${currentWeight.toString()} Kg' : 'Sem informação', style: const TextStyle(color: Colors.white)),
               ],
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Row(
               children: [
-                Text('Percentual de gordura: ',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-                Text('15.1%', style: TextStyle(color: Colors.white)),
+                const Text('Percentual de gordura: ',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(currentPercentFat > 0 ? '${currentPercentFat.toString()} %' : 'Sem informação', style: const TextStyle(color: Colors.white)),
               ],
             ),
           ],
