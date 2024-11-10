@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
-import 'package:my_fitness_progress/firebase_options.dart';
 import 'package:my_fitness_progress/src/controller/auth/auth_controller.dart';
 import 'package:my_fitness_progress/src/screen/home/splash_page.dart';
 
@@ -13,10 +11,6 @@ import 'package:my_fitness_progress/src/screen/home/splash_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   GetIt.I.registerSingleton<AuthController>(AuthController());
 
   runApp(const MyApp());

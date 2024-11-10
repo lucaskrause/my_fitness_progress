@@ -22,10 +22,4 @@ class EvaluationController {
   Future<void> deleteEvaluation() async {
     await service.deleteEvaluation();
   }
-
-  // final String collection = "avaliacoes";
-  // Future<void> getColletion(String collection) async {
-  //   var res = await service.getColletion(collection);
-  //   haveData = res.size > 0;
-  // }
 }
