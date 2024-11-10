@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:my_fitness_progress/src/models/evaluation.dart';
 
 class CardEvaluation extends StatefulWidget {
+  final int index;
   final Evaluation evaluation;
 
-  const CardEvaluation(this.evaluation, {super.key});
+  const CardEvaluation(this.index, this.evaluation, {super.key});
 
   @override
   State<CardEvaluation> createState() => _CardEvaluationState();
@@ -15,20 +16,27 @@ class _CardEvaluationState extends State<CardEvaluation> {
   Widget build(BuildContext context) {
     return Card(
       color: Theme.of(context).cardColor,
-      child: const Padding(
-        padding: EdgeInsets.all(10),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('1ª Avaliação', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             Text(
-              'Peso: 73.3kg',
-              style: TextStyle(color: Colors.white),
+              '${widget.index+1}ª Avaliação',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 5),
             Text(
-              'Percentual de gordura: 23%',
-              style: TextStyle(color: Colors.white),
+              'Peso: ${widget.evaluation.pesoAtual} kg',
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              'Percentual de gordura: ${widget.evaluation.percentFat} %',
+              style: const TextStyle(color: Colors.white),
             ),
           ],
         ),

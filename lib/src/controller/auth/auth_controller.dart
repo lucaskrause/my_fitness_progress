@@ -52,7 +52,7 @@ class AuthController {
       final obj = prefs.getString('objective');
 
       Map<String, double>? objective;
-      if (obj != null) {
+      if (obj != null && obj != "null") {
         objective = Map<String, double>.from(jsonDecode(obj));
       } 
 

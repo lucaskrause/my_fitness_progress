@@ -27,7 +27,6 @@ class _DrawerPageState extends State<DrawerPage> {
             title: const Text('Sair', style: TextStyle(color: Colors.white)),
             onTap: () async {
               await authController.removeUser();
-              if (!mounted) return;
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const RegisterPage()),
                 (route) => false

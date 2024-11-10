@@ -86,10 +86,7 @@ class _ResumeFitnessState extends State<ResumeFitness> {
                 await Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const NewEvaluationPage(isFirst: true)),
                 );
-                
-                widget.controller.getListEvaluations().then((value) {
-                  loadTable();
-                });
+                loadTable();
               },
               child: const Text("Cadastrar"),
             ),
@@ -108,44 +105,43 @@ class _ResumeFitnessState extends State<ResumeFitness> {
   }
 
   void loadTable() {
-    Map<int, List<double>> itens = {};
-    var eva = widget.controller.evaluationList;
+    widget.controller.getListEvaluations().then((value) {
+      Map<int, List<double>> itens = {};
+      var eva = widget.controller.evaluationList;
 
-    List<double> firstEvaluation = getPesos(eva.first);
-    itens[0] = firstEvaluation;
+      List<double> firstEvaluation = getPesos(eva.first);
+      itens[0] = firstEvaluation;
 
-    if (eva.length > 1) {
-      List<double> lastEvaluation = getPesos(eva.last);
-      itens[1] = lastEvaluation;
-    } else {
-      itens[1] = [0, 0];
-    }
+      if (eva.length > 1) {
+        List<double> lastEvaluation = getPesos(eva.last);
+        itens[1] = lastEvaluation;
+      } else {
+        itens[1] = [0, 0];
+      }
 
-    if (authController.user.objective != null) {
-      Map<String, double> objective = authController.user.objective!;
-      double weight = objective['weight']!;
-      double fatWeight = (objective['weight']! * objective['percentFat']!) / 100;
-      double cleanWeight = weight - fatWeight;
-      itens[2] = [fatWeight, cleanWeight];
-    }
-      
-    setState(() {
-      mainItems.addAll(itens);
-      currentWeight = double.parse(eva.last.pesoAtual!);
-      currentPercentFat = double.parse(eva.last.percentFat!);
+      if (authController.user.objective != null) {
+        Map<String, double> objective = authController.user.objective!;
+        double weight = objective['weight']!;
+        double fatWeight = (objective['weight']! * objective['percentFat']!) / 100;
+        double cleanWeight = weight - fatWeight;
+        itens[2] = [fatWeight, cleanWeight];
+      }
+        
+      setState(() {
+        mainItems.addAll(itens);
+        currentWeight = double.parse(eva.last.pesoAtual!);
+        currentPercentFat = double.parse(eva.last.percentFat!);
+      });
+
+      if (mainItems.isEmpty) {
+        showAskEvaluation();
+      }
     });
   }
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 1), () {
-      if (widget.controller.evaluationList.isEmpty) {
-        showAskEvaluation();
-      } else {
-        loadTable();
-      }
-    });
-
+    loadTable();
     super.initState();
   }
 

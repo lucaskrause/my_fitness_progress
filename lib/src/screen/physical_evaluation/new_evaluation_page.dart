@@ -93,16 +93,14 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Peso atual (kg)',
-                style: TextStyle(color: Colors.white)),
+            const Text('Peso atual (kg)', style: TextStyle(color: Colors.white)),
             const SizedBox(height: 5),
             Container(
               color: Theme.of(context).cardColor,
               child: TextField(
                 controller: pesoController,
                 readOnly: widget.isFirst,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -114,7 +112,7 @@ class _NewEvaluationPageState extends State<NewEvaluationPage> {
 
                   int alt = int.parse(controller.evaluation!.altura!);
                   Map imc = Helper.calculaIMC(alt, double.parse(value));
-                  controller.evaluation!.imc = imc["imc"];
+                  controller.evaluation!.imc = double.parse(imc["imc"]);
                   imcController.text = imc["imc"];
                   controller.evaluation!.classImc = imc["classification"];
                   classImcController.text = imc["classification"];
