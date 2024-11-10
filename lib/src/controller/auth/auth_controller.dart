@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:my_fitness_progress/src/models/user.dart';
+import 'package:my_fitness_progress/src/services/service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
-  AuthController();
-  
+  Service service = Service();
   User user = User();
 
   void setName(String value) {
@@ -49,7 +49,12 @@ class AuthController {
       final age = prefs.getInt('age');
       final height = prefs.getInt('height');
       final weight = prefs.getDouble('weight');
-      final objective = prefs.getString('objective') != null ? Map<String, double>.from(jsonDecode(prefs.getString('objective')!)) : null;
+      final obj = prefs.getString('objective');
+
+      Map<String, double>? objective;
+      if (obj != null) {
+        objective = Map<String, double>.from(jsonDecode(obj));
+      } 
 
       if (name != null && age != null && height != null && weight != null) {
         user = User(name: name, age: age, height: height, weight: weight, objective: objective);
@@ -72,7 +77,7 @@ class AuthController {
       prefs.remove('weight');
       prefs.remove('objective');
 
-      //TODO: remover dados do banco
+      await service.deleteAllEvaluations();
     } catch (e) {
       debugPrint(e.toString());
     }

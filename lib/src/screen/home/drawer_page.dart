@@ -25,8 +25,9 @@ class _DrawerPageState extends State<DrawerPage> {
           ListTile(
             leading: Icon(Icons.power_settings_new, color: Colors.red[700], weight: 700),
             title: const Text('Sair', style: TextStyle(color: Colors.white)),
-            onTap: () {
-              authController.removeUser();
+            onTap: () async {
+              await authController.removeUser();
+              if (!mounted) return;
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const RegisterPage()),
                 (route) => false
